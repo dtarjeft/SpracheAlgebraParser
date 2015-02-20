@@ -10,13 +10,7 @@ namespace MathParser
 {
     public class Expression
     {
-        public Expression(string statement, bool isNum) : this(statement, isNum, false)
-        {
-            _isNum = isNum;
-            _contents = statement;
-        }
-
-        public Expression(string statement, bool isNum, bool isNegative)
+        public Expression(string statement, bool isNum, bool isNegative = false)
         {
             _isNum = isNum;
             _contents = isNegative ? "-" + statement : statement;
@@ -24,11 +18,6 @@ namespace MathParser
 
         private string _contents;
         private bool _isNum;
-
-        private static List<string> SplitByChar(string a, char[] charToFactorBy)
-        {
-            return new List<string>(a.Split(charToFactorBy, StringSplitOptions.RemoveEmptyEntries));
-        }
 
         private static bool IsANumber(string statement)
         {
@@ -47,6 +36,7 @@ namespace MathParser
                 _contents = (Convert.ToDouble(_contents) - Convert.ToDouble(expression._contents)).ToString();
                 return this;
             }
+
             return new Expression(_contents + "-" + expression._contents, false);
         }
 
@@ -54,8 +44,20 @@ namespace MathParser
         {
             if (this._isNum && expression._isNum)
             {
-                return new Expression((Convert.ToDouble(_contents) + Convert.ToDouble(expression._contents)).ToString(), true);
+                _contents = (Convert.ToDouble(_contents) + Convert.ToDouble(expression._contents)).ToString();
+                return this;
             }
+            var factorThis = new List<string>(_contents.Split(new[] { '+' }, StringSplitOptions.RemoveEmptyEntries));
+            var factorThat =
+                new List<string>(expression._contents.Split(new[] { '+' }, StringSplitOptions.RemoveEmptyEntries));
+            for (var i = 0; i < factorThis.Count; i++)
+            {
+                for (var j = 0; j < factorThat.Count; j++)
+                {
+                    
+                }
+            }
+
             return new Expression(_contents + "+" + expression._contents, false);
         }
 
@@ -63,11 +65,12 @@ namespace MathParser
         {
             if (this._isNum && expression._isNum)
             {
-                return new Expression((Convert.ToDouble(_contents) * Convert.ToDouble(expression._contents)).ToString(), true);
+                _contents = (Convert.ToDouble(_contents) * Convert.ToDouble(expression._contents)).ToString();
+                return this;
             }
             else if (this._isNum && !expression._isNum)
             {
-                var factorThat = SplitByChar(expression._contents, new[] {'+'});
+                var factorThat = expression._contents.Split(new[] {'+'}, StringSplitOptions.RemoveEmptyEntries);
                 var combinedList = factorThat.Select(str => str.Insert(0, _contents + "*")).ToList();
                 var result = new StringBuilder();
                 for (var index = 0; index < combinedList.Count; index++)
@@ -112,8 +115,6 @@ namespace MathParser
             else
             {
                 var chArray = new []{'+'};
-                var factorThis = SplitByChar(this._contents, chArray);
-                var factorThat = SplitByChar(expression._contents, chArray);
                 //var result = Recombine(factorThis, factorThat, new[] {'*'});
             }
             return new Expression(_contents + "*" + expression._contents, false);
@@ -124,17 +125,12 @@ namespace MathParser
             return (obj == string.Empty);
         }
 
-        //private static string Recombine(List<string> s1, List<string> s2, char[] c)
-        //{
-        //    var result = new List<string>();
-
-        //}
-
         public Expression Divide(Expression expression)
         {
             if (this._isNum && expression._isNum)
             {
-                return new Expression((Convert.ToDouble(_contents) / Convert.ToDouble(expression._contents)).ToString(), true);
+                _contents = (Convert.ToDouble(_contents) / Convert.ToDouble(expression._contents)).ToString();
+                return this;
             }
             return new Expression(_contents + "/" + expression._contents, false);
         }
@@ -143,7 +139,8 @@ namespace MathParser
         {
             if (this._isNum && expression._isNum)
             {
-                return new Expression(Math.Pow(Convert.ToDouble(_contents), Convert.ToDouble(expression._contents)).ToString(), true);
+                _contents = Math.Pow(Convert.ToDouble(_contents), Convert.ToDouble(expression._contents)).ToString();
+                return this;
             }
             return new Expression(_contents + "^" + expression._contents, false);
         }

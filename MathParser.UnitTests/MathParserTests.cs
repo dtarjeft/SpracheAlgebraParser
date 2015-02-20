@@ -90,6 +90,7 @@
         [TestCase("x", "x")]
         [TestCase("x^3*y", "x^3*y")]
         [TestCase("3^x*3^y", "3^xy")]
+        [TestCase("x*x", "x^2")]
         public void MathParser_AlgebraicStatements(string statement, string expected)
         {
             this.Evaluate(statement, expected);
