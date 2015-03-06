@@ -89,7 +89,7 @@
         [TestCase("(2*x+4)*(3*x+1)", "6x^2+14x+4")]
         [TestCase("x", "x")]
         [TestCase("x^3*y", "x^3*y")]
-        [TestCase("3^x*3^y", "3^xy")]
+        [TestCase("3^x*3^y", "3^x*y")]
         [TestCase("x*x", "x^2")]
         public void MathParser_AlgebraicStatements(string statement, string expected)
         {

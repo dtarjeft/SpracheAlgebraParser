@@ -10,6 +10,6 @@
         /// </summary>
         /// <param name="statement">A string representatin of a mathematical statement.</param>
         /// <returns>The value of the statement once evaluated.</returns>
-        string Parse(string statement);
+        double Parse(string statement);
     }
 }

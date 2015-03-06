@@ -47,7 +47,6 @@
   <ItemGroup>
     <Compile Include="CalcParser.cs" />
     <Compile Include="Expression.cs" />
-    <Compile Include="FactorFactory.cs" />
     <Compile Include="IExpressionParser.cs" />
     <Compile Include="IMathParser.cs" />
     <Compile Include="MathParser.cs" />
